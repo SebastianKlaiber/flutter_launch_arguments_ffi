@@ -22,3 +22,23 @@ functions:
 structs:
   include:
     - 'CommandLineArguments'
+
+# Exclude system unions that are pulled in transitively from headers
+unions:
+  exclude:
+    - '__.*'
+    - '_.*'
+
+# Exclude system macros/constants that aren't needed
+macros:
+  exclude:
+    - '__.*'
+    - '_.*'
+    - 'INT.*'
+    - 'UINT.*'
+    - 'SIZE_.*'
+    - 'RSIZE_.*'
+    - 'PTRDIFF_.*'
+    - 'WCHAR_.*'
+    - 'WINT_.*'
+    - 'SIG_ATOMIC_.*'
