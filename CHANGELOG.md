@@ -1,3 +1,10 @@
+## 0.1.2
+
+* **Improvement**: Fix pub.dev scoring issues
+  * Shorten package description to meet 180 character limit
+  * Format Dart files to pass static analysis checks
+  * Increase pub.dev score from 140/160 to 150/160
+
 ## 0.1.1
 
 * **Bug Fix**: Add graceful handling for desktop platforms and tests

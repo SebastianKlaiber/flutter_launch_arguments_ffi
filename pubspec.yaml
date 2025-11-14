@@ -1,6 +1,6 @@
 name: flutter_launch_arguments_ffi
 description: Access command-line launch arguments on iOS and Android via FFI. Web-compatible with graceful degradation. Ideal for Maestro testing and debugging.
-version: 0.1.1
+version: 0.1.2
 homepage: https://github.com/SebastianKlaiber/flutter_launch_arguments_ffi
 repository: https://github.com/SebastianKlaiber/flutter_launch_arguments_ffi
 issue_tracker: https://github.com/SebastianKlaiber/flutter_launch_arguments_ffi/issues
