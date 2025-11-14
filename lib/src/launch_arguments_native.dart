@@ -24,7 +24,7 @@ DynamicLibrary? _getDylib() {
   }
 
   if (Platform.isIOS) {
-    _dylib = DynamicLibrary.process();  // SPM bundles as framework
+    _dylib = DynamicLibrary.process(); // SPM bundles as framework
   } else if (Platform.isAndroid) {
     _dylib = DynamicLibrary.open('lib$_libName.so');
   }
@@ -97,7 +97,8 @@ class FlutterLaunchArgumentsNative implements FlutterLaunchArgumentsInterface {
           final arg = _allArguments[i];
 
           // Check if next argument exists and doesn't start with - (potential value)
-          final nextArg = (i + 1 < _allArguments.length) ? _allArguments[i + 1] : null;
+          final nextArg =
+              (i + 1 < _allArguments.length) ? _allArguments[i + 1] : null;
           final hasNextValue = nextArg != null && !nextArg.startsWith('-');
 
           if (_parseArgumentWithLookahead(arg, nextArg, hasNextValue)) {
@@ -113,7 +114,8 @@ class FlutterLaunchArgumentsNative implements FlutterLaunchArgumentsInterface {
   }
 
   /// Returns true if the next argument was consumed as a value
-  bool _parseArgumentWithLookahead(String arg, String? nextArg, bool hasNextValue) {
+  bool _parseArgumentWithLookahead(
+      String arg, String? nextArg, bool hasNextValue) {
     // Handle --key=value format
     if (arg.startsWith('--') && arg.contains('=')) {
       final stripped = arg.substring(2);

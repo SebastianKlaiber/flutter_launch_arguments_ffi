@@ -8,7 +8,8 @@ FlutterLaunchArgumentsInterface get platformInstance =>
 ///
 /// This implementation is used for platforms that are not yet supported.
 /// All methods throw UnsupportedError to indicate the platform is not supported.
-class FlutterLaunchArgumentsUnsupported implements FlutterLaunchArgumentsInterface {
+class FlutterLaunchArgumentsUnsupported
+    implements FlutterLaunchArgumentsInterface {
   static FlutterLaunchArgumentsUnsupported? _instance;
 
   FlutterLaunchArgumentsUnsupported._internal();
