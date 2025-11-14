@@ -13,7 +13,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   List<String> _args = [];
   String? _foo;
-  bool _enabled = false;
+  bool? _enabled;
   String _error = '';
 
   @override
@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
               ),
             Card(child: ListTile(title: Text('Count: ${_args.length}'))),
             Card(child: ListTile(title: const Text('foo'), subtitle: Text(_foo ?? 'null'))),
-            Card(child: ListTile(title: const Text('enabled'), subtitle: Text('$_enabled'))),
+            Card(child: ListTile(title: const Text('enabled'), subtitle: Text(_enabled?.toString() ?? 'null'))),
             const Divider(),
             ..._args.map((arg) => Card(child: ListTile(title: Text(arg)))),
           ],

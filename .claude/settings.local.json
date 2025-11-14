@@ -21,7 +21,11 @@
       "Bash(/tmp/android_screenshot.png)",
       "Bash(/tmp/android_screenshot_enabled_true.png)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nPrepare package for pub.dev publication\n\n- Add MIT License\n- Update README with comprehensive documentation\n- Add repository, homepage, and issue tracker URLs to pubspec.yaml\n- Improve package description\n- Rename docs to doc directory (pub.dev convention)\n- Exclude generated FFI bindings from analyzer\n- Update getBool to return nullable bool for better null-safety\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nPrepare package for pub.dev publication\n\n- Add MIT License\n- Update README with comprehensive documentation\n- Add repository, homepage, and issue tracker URLs to pubspec.yaml\n- Improve package description\n- Rename docs to doc directory (pub.dev convention)\n- Exclude generated FFI bindings from analyzer\n- Update getBool to return nullable bool for better null-safety\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push)",
+      "Bash(dart pub publish:*)",
+      "Bash(dart analyze:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
