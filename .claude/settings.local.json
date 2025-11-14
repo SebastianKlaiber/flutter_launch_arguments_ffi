@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter build:*)",
+      "Bash(pod install)",
+      "mcp__maestro__launch_app",
+      "mcp__maestro__take_screenshot",
+      "mcp__maestro__run_flow_files",
+      "Bash(flutter clean:*)",
+      "mcp__maestro__run_flow",
+      "Bash(cat:*)",
+      "Bash(./gradlew clean:*)",
+      "mcp__maestro__list_devices",
+      "Bash(xcrun simctl install:*)",
+      "mcp__maestro__inspect_view_hierarchy",
+      "mcp__maestro__stop_app",
+      "Bash(adb -s 28281JEGR15486 install:*)",
+      "Bash(adb -s 28281JEGR15486 shell am start:*)",
+      "Bash(adb -s 28281JEGR15486 shell:*)",
+      "Bash(adb:*)",
+      "Bash(/tmp/android_screenshot.png)",
+      "Bash(/tmp/android_screenshot_enabled_true.png)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

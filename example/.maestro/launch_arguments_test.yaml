@@ -1,0 +1,29 @@
+appId: com.example.flutterLaunchArgumentsFfiExample
+---
+- launchApp:
+    clearState: true
+    arguments:
+      foo: "hello"
+      enabled: false
+      test: "123"
+
+- assertVisible: "Launch Arguments FFI"
+
+# Verify foo argument value is parsed correctly
+- assertVisible: "foo"
+- assertVisible: "hello"
+
+# Scroll down to see all parameters
+- scroll
+
+# Verify enabled argument value is parsed correctly (should show false)
+- assertVisible: "enabled"
+- assertVisible: "false"
+
+# Verify test argument value is parsed correctly
+- assertVisible: "test"
+- assertVisible: "123"
+
+# Take a screenshot to verify all arguments are displayed
+- takeScreenshot: "launch_args_enabled_false"
+
