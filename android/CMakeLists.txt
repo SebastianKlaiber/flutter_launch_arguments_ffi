@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(flutter_launch_arguments_ffi VERSION 1.0.0 LANGUAGES C)
 
-# CRITICAL: Reference iOS header location (single source of truth)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../ios/Sources/flutter_launch_arguments_ffi/include)
+# Reference the shared public header used by iOS SwiftPM and Android.
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../ios/flutter_launch_arguments_ffi/Sources/flutter_launch_arguments_ffi_native/include)
 
 add_library(flutter_launch_arguments_ffi SHARED
     src/main/cpp/android_args.c

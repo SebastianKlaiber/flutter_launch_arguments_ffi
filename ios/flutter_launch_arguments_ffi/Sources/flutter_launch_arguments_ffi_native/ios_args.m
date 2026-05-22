@@ -1,5 +1,8 @@
 #import <Foundation/Foundation.h>
-#include "include/launch_arguments.h"
+#include <stdlib.h>
+#include <string.h>
+
+#include "launch_arguments.h"
 
 FFI_PLUGIN_EXPORT CommandLineArguments* get_command_line_arguments(void) {
     @autoreleasepool {

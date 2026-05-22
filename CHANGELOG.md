@@ -1,3 +1,12 @@
+## 0.2.0
+
+* **Breaking Change**: Add Flutter Swift Package Manager support for iOS
+  * Move the iOS Swift package to Flutter's expected `ios/flutter_launch_arguments_ffi/Package.swift` location
+  * Split Swift plugin registration and Objective-C FFI code into separate SwiftPM targets
+  * Update CocoaPods fallback paths to use the same shared SwiftPM sources
+  * Update Android CMake and ffigen to use the moved public header
+  * Raise minimum Flutter SDK to `>=3.41.0` for `FlutterFramework` SwiftPM dependency support
+
 ## 0.1.2
 
 * **Improvement**: Fix pub.dev scoring issues

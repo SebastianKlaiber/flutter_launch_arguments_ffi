@@ -29,7 +29,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_launch_arguments_ffi: ^0.0.1
+  flutter_launch_arguments_ffi: ^0.2.0
 ```
 
 Then run:

@@ -10,17 +10,16 @@ import 'dart:ffi' as ffi;
 class FlutterLaunchArgumentsBindings {
   /// Holds the symbol lookup function.
   final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-      _lookup;
+  _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
   FlutterLaunchArgumentsBindings(ffi.DynamicLibrary dynamicLibrary)
-      : _lookup = dynamicLibrary.lookup;
+    : _lookup = dynamicLibrary.lookup;
 
   /// The symbols are looked up with [lookup].
   FlutterLaunchArgumentsBindings.fromLookup(
-      ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-          lookup)
-      : _lookup = lookup;
+    ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup,
+  ) : _lookup = lookup;
 
   ffi.Pointer<CommandLineArguments> get_command_line_arguments() {
     return _get_command_line_arguments();
@@ -28,22 +27,19 @@ class FlutterLaunchArgumentsBindings {
 
   late final _get_command_line_argumentsPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<CommandLineArguments> Function()>>(
-          'get_command_line_arguments');
+        'get_command_line_arguments',
+      );
   late final _get_command_line_arguments = _get_command_line_argumentsPtr
       .asFunction<ffi.Pointer<CommandLineArguments> Function()>();
 
-  void free_command_line_arguments(
-    ffi.Pointer<CommandLineArguments> args,
-  ) {
-    return _free_command_line_arguments(
-      args,
-    );
+  void free_command_line_arguments(ffi.Pointer<CommandLineArguments> args) {
+    return _free_command_line_arguments(args);
   }
 
-  late final _free_command_line_argumentsPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Void Function(ffi.Pointer<CommandLineArguments>)>>(
-      'free_command_line_arguments');
+  late final _free_command_line_argumentsPtr =
+      _lookup<
+        ffi.NativeFunction<ffi.Void Function(ffi.Pointer<CommandLineArguments>)>
+      >('free_command_line_arguments');
   late final _free_command_line_arguments = _free_command_line_argumentsPtr
       .asFunction<void Function(ffi.Pointer<CommandLineArguments>)>();
 
@@ -54,12 +50,11 @@ class _SymbolAddresses {
   final FlutterLaunchArgumentsBindings _library;
   _SymbolAddresses(this._library);
   ffi.Pointer<ffi.NativeFunction<ffi.Pointer<CommandLineArguments> Function()>>
-      get get_command_line_arguments => _library._get_command_line_argumentsPtr;
+  get get_command_line_arguments => _library._get_command_line_argumentsPtr;
   ffi.Pointer<
-          ffi
-          .NativeFunction<ffi.Void Function(ffi.Pointer<CommandLineArguments>)>>
-      get free_command_line_arguments =>
-          _library._free_command_line_argumentsPtr;
+    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<CommandLineArguments>)>
+  >
+  get free_command_line_arguments => _library._free_command_line_argumentsPtr;
 }
 
 final class CommandLineArguments extends ffi.Struct {

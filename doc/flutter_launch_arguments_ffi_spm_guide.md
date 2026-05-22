@@ -27,13 +27,16 @@ flutter_launch_arguments_ffi/
 │       └── flutter_launch_arguments_bindings_generated.dart
 │
 ├── ios/
-│   ├── Sources/
-│   │   └── flutter_launch_arguments_ffi/
-│   │       ├── include/
-│   │       │   └── launch_arguments.h          # Shared header (iOS primary)
-│   │       ├── ios_args.m                      # iOS implementation
-│   │       └── FlutterLaunchArgumentsFfiPlugin.swift
-│   └── Package.swift                            # SPM manifest
+│   ├── flutter_launch_arguments_ffi/
+│   │   ├── Package.swift                       # SPM manifest
+│   │   └── Sources/
+│   │       ├── flutter_launch_arguments_ffi/
+│   │       │   └── FlutterLaunchArgumentsFfiPlugin.swift
+│   │       └── flutter_launch_arguments_ffi_native/
+│   │           ├── include/
+│   │           │   └── launch_arguments.h      # Shared public header
+│   │           └── ios_args.m                  # iOS implementation
+│   └── flutter_launch_arguments_ffi.podspec
 │
 ├── android/
 │   ├── src/
@@ -51,13 +54,13 @@ flutter_launch_arguments_ffi/
 └── pubspec.yaml
 ```
 
-**Key Design Decision:** Header lives in `ios/Sources/.../include/` because SPM cannot reference parent directories. Android CMake references this location.
+**Key Design Decision:** Header lives under the Swift package in `ios/flutter_launch_arguments_ffi/Sources/.../include/`, and Android CMake references that same header.
 
 ---
 
 ## Step 1: C Header (Shared Interface)
 
-**File:** `ios/Sources/flutter_launch_arguments_ffi/include/launch_arguments.h`
+**File:** `ios/flutter_launch_arguments_ffi/Sources/flutter_launch_arguments_ffi_native/include/launch_arguments.h`
 
 ```c
 #ifndef LAUNCH_ARGUMENTS_H
@@ -98,11 +101,11 @@ FFI_PLUGIN_EXPORT void free_command_line_arguments(CommandLineArguments *args);
 
 ### Part A: Native Code
 
-**File:** `ios/Sources/flutter_launch_arguments_ffi/ios_args.m`
+**File:** `ios/flutter_launch_arguments_ffi/Sources/flutter_launch_arguments_ffi_native/ios_args.m`
 
 ```objective-c
 #import <Foundation/Foundation.h>
-#include "include/launch_arguments.h"
+#include "launch_arguments.h"
 
 FFI_PLUGIN_EXPORT CommandLineArguments* get_command_line_arguments(void) {
     @autoreleasepool {
@@ -139,32 +142,44 @@ FFI_PLUGIN_EXPORT void free_command_line_arguments(CommandLineArguments *args) {
 
 ### Part B: Swift Package Manager Manifest
 
-**File:** `ios/Package.swift`
+**File:** `ios/flutter_launch_arguments_ffi/Package.swift`
 
 ```swift
 // swift-tools-version: 5.9
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
 import PackageDescription
 
 let package = Package(
     name: "flutter_launch_arguments_ffi",
     platforms: [
-        .iOS(.v12)
+        .iOS("13.0")
     ],
     products: [
-        .library(
-            name: "flutter_launch_arguments_ffi",
-            targets: ["flutter_launch_arguments_ffi"]
-        )
+        .library(name: "flutter-launch-arguments-ffi", targets: ["flutter_launch_arguments_ffi"])
     ],
-    dependencies: [],
+    dependencies: [
+        .package(name: "FlutterFramework", path: "../FlutterFramework")
+    ],
     targets: [
         .target(
             name: "flutter_launch_arguments_ffi",
-            dependencies: [],
-            path: "Sources/flutter_launch_arguments_ffi",
+            dependencies: [
+                .target(name: "flutter_launch_arguments_ffi_native"),
+                .product(name: "FlutterFramework", package: "FlutterFramework")
+            ],
+            resources: [
+                // If this plugin requires a privacy manifest, update
+                // PrivacyInfo.xcprivacy and uncomment the resource below.
+                // .process("PrivacyInfo.xcprivacy"),
+            ]
+        ),
+        .target(
+            name: "flutter_launch_arguments_ffi_native",
+            path: "Sources/flutter_launch_arguments_ffi_native",
             publicHeadersPath: "include",
             cSettings: [
-                .headerSearchPath("include"),
+                .headerSearchPath("include")
             ]
         )
     ],
@@ -174,7 +189,7 @@ let package = Package(
 
 ### Part C: Plugin Registration (Optional but Recommended)
 
-**File:** `ios/Sources/flutter_launch_arguments_ffi/FlutterLaunchArgumentsFfiPlugin.swift`
+**File:** `ios/flutter_launch_arguments_ffi/Sources/flutter_launch_arguments_ffi/FlutterLaunchArgumentsFfiPlugin.swift`
 
 ```swift
 import Flutter
@@ -417,7 +432,7 @@ find_package(JNI REQUIRED)
 include_directories(${JNI_INCLUDE_DIRS})
 
 # CRITICAL: Reference iOS header location
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../ios/Sources/flutter_launch_arguments_ffi/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../ios/flutter_launch_arguments_ffi/Sources/flutter_launch_arguments_ffi_native/include)
 
 add_library(flutter_launch_arguments_ffi SHARED
     src/main/cpp/android_args.c
@@ -474,7 +489,7 @@ language: c
 
 headers:
   entry-points:
-    - 'ios/Sources/flutter_launch_arguments_ffi/include/launch_arguments.h'
+    - 'ios/flutter_launch_arguments_ffi/Sources/flutter_launch_arguments_ffi_native/include/launch_arguments.h'
 
 preamble: |
   // ignore_for_file: camel_case_types, non_constant_identifier_names
@@ -760,19 +775,19 @@ After creating with `flutter create --template=plugin_ffi`:
 
 1. **Move header to SPM location:**
 ```bash
-mkdir -p ios/Sources/flutter_launch_arguments_ffi/include
-mv src/launch_arguments.h ios/Sources/flutter_launch_arguments_ffi/include/
+mkdir -p ios/flutter_launch_arguments_ffi/Sources/flutter_launch_arguments_ffi_native/include
+mv src/launch_arguments.h ios/flutter_launch_arguments_ffi/Sources/flutter_launch_arguments_ffi_native/include/
 ```
 
 2. **Create iOS implementation:**
 ```bash
-touch ios/Sources/flutter_launch_arguments_ffi/ios_args.m
+touch ios/flutter_launch_arguments_ffi/Sources/flutter_launch_arguments_ffi_native/ios_args.m
 # Add implementation from Step 2
 ```
 
 3. **Create Package.swift:**
 ```bash
-touch ios/Package.swift
+touch ios/flutter_launch_arguments_ffi/Package.swift
 # Add SPM manifest from Step 2
 ```
 
